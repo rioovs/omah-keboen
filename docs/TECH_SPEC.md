@@ -60,9 +60,22 @@ Section Lokasi (S5) memakai gambar statis lokal `assets/img/placeholder-map.svg`
 
 ---
 
-## 5. Inventaris Token Placeholder Stage 2 (TC-50, TC-51)
+## 5. Inventaris Token Placeholder Stage 2 (TC-51)
 
-Pada Stage 2 (Gate 2), inventaris placeholder telah diperbarui menjadi 0 token, 0 atribut `data-placeholder`, dan 0 komentar placeholder (TC-51 terpenuhi). Seluruh 60 item menu dan harga telah terisi lengkap dari `docs/MENU.md` dan `docs/CLIENT_INPUT.md`.
+Semua placeholder telah dihapus seutuhnya (all placeholders have been removed):
+- **0 token `PLACEHOLDER_*`**
+- **0 atribut `data-placeholder`**
+- **0 komentar placeholder**
+
+Seluruh data klien bersifat final (all client data is final):
+- **WhatsApp (WA):** `+62 852-3663-9216` (`https://wa.me/6285236639216`)
+- **Instagram (IG):** `@omahkeboen.jbg` (`https://instagram.com/omahkeboen.jbg`)
+- **Jam operasional (hours):** Senin–Minggu 08.00–21.00 WIB
+- **Alamat (address) & Google Maps (maps):** Kedungsari, Karang Dagaan, Kec. Megaluh, Kabupaten Jombang, Jawa Timur 61462 (`https://www.google.com/maps/search/?api=1&query=Kedungsari%2C%20Karang%20Dagaan%2C%20Kec.%20Megaluh%2C%20Kabupaten%20Jombang%2C%20Jawa%20Timur%2061462`)
+- **Menu (menu 60 items):** Seluruh 60 item menu final terisi lengkap dari `docs/MENU.md` beserta harga terverifikasi
+- **Foto (photos):** Foto kurasi Instagram final di `assets/img/ig/` untuk hero (`ig-07.jpg`) dan 8 foto mosaik galeri
+
+Hasil audit TC-51: lolos 100% tanpa sisa token placeholder.
 
 ---
 
@@ -80,7 +93,7 @@ Pada Stage 2 (Gate 2), inventaris placeholder telah diperbarui menjadi 0 token, 
 | US-ID | ID Section | Ground | Komponen Kunci | Deskripsi |
 |---|---|---|---|---|
 | US-01 | `#beranda` | cream | `.hero`, `.hero__proof`, `.btn` | H1, positioning, proof bar, 2 CTA, foto split 7/5 |
-| US-02 | `#menu` | cream | `.menu`, `.menu-card`, `.menu__empty` | 4 kategori H3, 2 subgrup H4, harga `—`, fallback empty |
+| US-02 | `#menu` | cream | `.menu`, `.menu-card` | 4 kategori H3, 2 subgrup H4, harga terverifikasi, 60 item final (blok `.menu__empty` dihapus) |
 | US-03 | `#tentang` | cream-deep | `.about`, `.value-trio` | Narasi brand (kopi, seduh, ramah) & 3 poin nilai |
 | US-04 | `#galeri` | cream | `.gallery`, `.gallery__item` | Mosaik 8 foto IG, responsif 1→2→3→4 kolom, anchor 2 kol |
 | US-05 | `#lokasi` | cream-deep | `.location`, `.hours-table`, `.map-embed` | Alamat 2 baris, tabel 7 hari 08.00–21.00, penanda hari ini, peta SVG |
@@ -95,7 +108,10 @@ Pada Stage 2 (Gate 2), inventaris placeholder telah diperbarui menjadi 0 token, 
 
 - Kepatuhan penuh D1–D16: path relatif tanpa leading slash (D2), radius 0 (eksepsi pill Halal), tipografi Fraunces & Inter (D6), transisi warna 150 ms tanpa transform/shadow pada elemen diam.
 - File `assets/img/ig/ig-05.jpg` (poster QR) tidak dipakai di markup agar tidak terpotong (D14).
-- Sesuai R9, 10 foto kurasi Instagram difungsikan sebagai konten Stage 1 berlabel placeholder data hingga izin resmi dikonfirmasi.
+- Foto kurasi Instagram (`assets/img/ig/`) berstatus final pada Stage 2 tanpa penanda placeholder (TC-51).
+- **Resolusi BUG-01:** Footer link touch target width expanded to `min-width: 44px` with `padding-inline: 12px` and `justify-content: center` pada `.footer__links a` untuk memastikan seluruh tautan footer memenuhi kriteria touch target ≥ 44×44 px pada mobile viewport (DESIGN_SPEC §5, TC-45).
+- **Penghapusan Blok `.menu__empty` (removal of `.menu__empty` block):** Seluruh 60 item menu final dari `docs/MENU.md` telah terisi di `index.html`, sehingga blok fallback placeholder `.menu__empty` dihapus seutuhnya.
+- **Generasi Tangkapan Layar Stage 2 (generation of final screenshots):** Screenshot final telah dihasilkan di `docs/preview/stage2/` (`desktop-1440.png` dan `mobile-390.png`) untuk verifikasi visual Stage 2 Final.
 
 ---
 
@@ -103,5 +119,7 @@ Pada Stage 2 (Gate 2), inventaris placeholder telah diperbarui menjadi 0 token, 
 
 1. **Fallback Teks Tahun Statis di Markup (TC-32):** DESIGN_SPEC §2.S7 menyarankan span kosong. Untuk memenuhi TC-32 (agar footer tidak kosong saat JavaScript nonaktif), fallback statis `2026` dicantumkan di markup dan disinkronkan JS via `textContent`.
 2. **Format URL Google Maps (TC-23, TC-27):** Memakai URL `https://www.google.com/maps/search/?api=1&query=...` (bukan short-link `maps.app.goo.gl`) agar lolos uji regex domain `google.com/maps` (TC-23) dan konsisten dengan alamat fisik (TC-27). Tautan pendek klien tetap dicatat di `docs/CONTENT_DATA.md`.
-3. **Resolusi BUG-01 (Touch Target Link Footer):** Menambahkan `min-width: 44px`, `justify-content: center`, dan `padding-inline: 12px` pada `.footer__links a` sehingga touch target width sekarang >= 62px.
-4. **Responsivitas Menu Card (320px):** Menambahkan `flex-wrap: wrap` pada `.menu-card` untuk responsivitas sempurna hingga viewport 320px.
+3. **Resolusi BUG-01 (Footer Link Touch Target Width):** Footer link touch target width expanded to `min-width: 44px` with `padding-inline: 12px` and `justify-content: center` pada `.footer__links a` (sehingga touch target width sekarang ≥ 62 px pada kata pendek seperti "Menu", "Galeri", "Lokasi", melampaui batas minimum 44×44 px).
+4. **Penghapusan Blok `.menu__empty` (Removal of `.menu__empty` Block):** Blok fallback `.menu__empty` telah dihapus karena seluruh 60 item menu final dari `docs/MENU.md` sudah terpopulasi lengkap di `index.html`.
+5. **Generasi Tangkapan Layar Final Stage 2 (Final Screenshots Generation):** Tangkapan layar final Gate 2 telah digenerasi dan disimpan di `docs/preview/stage2/` (`desktop-1440.png` dan `mobile-390.png`).
+6. **Responsivitas Menu Card (320px):** Menambahkan `flex-wrap: wrap` pada `.menu-card` untuk responsivitas sempurna hingga viewport 320px.
