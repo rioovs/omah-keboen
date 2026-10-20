@@ -152,7 +152,8 @@ Checklist fungsional (ringkas, sebagian sudah otomatis di QA — `docs/QA_REPORT
 ### 6.1 Hasil Lighthouse pada URL live (post-deploy 2026-10-20)
 
 Diukur dengan Lighthouse 13.5.0, `--form-factor=mobile`, terhadap
-`https://rivos.is-a.dev/omah-keboen/` (laporan mentah: `docs/preview/qa2/lighthouse-live-mobile.json`).
+`https://rivos.is-a.dev/omah-keboen/` (laporan mentah tersimpan di repo — path `docs/preview/qa2/lighthouse-live-mobile.json`;
+folder `docs/preview/` tidak ikut dipublish ke Pages).
 
 | Run | Performance | Accessibility | Best Practices | SEO | FCP | LCP | CLS | TBT |
 |---|---|---|---|---|---|---|---|---|
