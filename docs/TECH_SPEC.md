@@ -1,6 +1,6 @@
 # Spesifikasi Teknis — Website Single-Page "Omah Keboen"
 
-**Pemilik:** okta-softwaredeveloper | **Status:** Prototype Stage 1 (Gate 1) | **Target:** US-01..US-07 | **Versi:** 2.0
+**Pemilik:** okta-softwaredeveloper | **Status:** Stage 2 Final (Gate 2 Ready) | **Target:** US-01..US-07 | **Versi:** 2.1
 
 ---
 
@@ -37,7 +37,8 @@ omah-keboen-web/
 ```
 
 - **Jumlah berkas kode:** 1 CSS (`assets/css/styles.css`) dan 1 JS (`assets/js/main.js`).
-- **Ukuran aktual (TC-48):** CSS = 16.985 byte, JS = 2.331 byte. Total = 19.316 byte (~19,3 KB), di bawah batas 250 KB (target < 40 KB terpenuhi).
+- **Ukuran aktual (TC-48):** CSS: 18 KB, JS: 2.3 KB, total JS+CSS: ~20.3 KB, well below 250 KB limit.
+- **Data Menu:** Seluruh 60 item menu final dari `docs/MENU.md` telah dimuat lengkap di `index.html` (all 60 final menu items from docs/MENU.md are populated in index.html).
 - **Aset gambar:** 8 SVG fallback di disk (D5), hanya `placeholder-map.svg` dirujuk markup. 10 foto IG di `assets/img/ig/`.
 
 ---
@@ -59,18 +60,9 @@ Section Lokasi (S5) memakai gambar statis lokal `assets/img/placeholder-map.svg`
 
 ---
 
-## 5. Inventaris Token Placeholder Stage 1 (TC-50, TC-51)
+## 5. Inventaris Token Placeholder Stage 2 (TC-50, TC-51)
 
-Data terverifikasi (WhatsApp, Instagram, jam operasional, alamat) dipasang final (D12). Token placeholder hanya dipakai pada bagian yang menanti data klien:
-
-| US-ID | Token Placeholder | Lokasi di Markup | Status |
-|---|---|---|---|
-| US-01 | `PLACEHOLDER_HERO_IMAGE` | Komentar & caption hero image (`data-placeholder="true"`) | Foto portrait IG sementara; menunggu landscape final |
-| US-02 | `PLACEHOLDER_ITEM_NAME` | Item Non-Kopi & Main Course Italian (`data-placeholder="true"`) | Menunggu menu final klien |
-| US-02 | `PLACEHOLDER_MENU_ITEMS` | Caption blok `.menu__empty` (`data-placeholder="true"`) | Menunggu menu final klien |
-| US-04 | `PLACEHOLDER_GALLERY` | Komentar di atas grid galeri | 8 foto IG terpasang; menunggu konfirmasi lisensi (R9) |
-
-*Catatan:* Token WA, IG, jam, dan harga tidak dipakai pada markup karena data telah final per D12 dan D13 (harga memakai label em-dash `—`). Pada Gate 2, seluruh token wajib bernilai 0 (TC-51).
+Pada Stage 2 (Gate 2), inventaris placeholder telah diperbarui menjadi 0 token, 0 atribut `data-placeholder`, dan 0 komentar placeholder (TC-51 terpenuhi). Seluruh 60 item menu dan harga telah terisi lengkap dari `docs/MENU.md` dan `docs/CLIENT_INPUT.md`.
 
 ---
 
@@ -107,7 +99,9 @@ Data terverifikasi (WhatsApp, Instagram, jam operasional, alamat) dipasang final
 
 ---
 
-## 9. Deviasi yang Disengaja & Alasannya
+## 9. Deviasi yang Disengaja & Resolusi Isu
 
 1. **Fallback Teks Tahun Statis di Markup (TC-32):** DESIGN_SPEC §2.S7 menyarankan span kosong. Untuk memenuhi TC-32 (agar footer tidak kosong saat JavaScript nonaktif), fallback statis `2026` dicantumkan di markup dan disinkronkan JS via `textContent`.
 2. **Format URL Google Maps (TC-23, TC-27):** Memakai URL `https://www.google.com/maps/search/?api=1&query=...` (bukan short-link `maps.app.goo.gl`) agar lolos uji regex domain `google.com/maps` (TC-23) dan konsisten dengan alamat fisik (TC-27). Tautan pendek klien tetap dicatat di `docs/CONTENT_DATA.md`.
+3. **Resolusi BUG-01 (Touch Target Link Footer):** Menambahkan `min-width: 44px`, `justify-content: center`, dan `padding-inline: 12px` pada `.footer__links a` sehingga touch target width sekarang >= 62px.
+4. **Responsivitas Menu Card (320px):** Menambahkan `flex-wrap: wrap` pada `.menu-card` untuk responsivitas sempurna hingga viewport 320px.

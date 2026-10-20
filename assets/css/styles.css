@@ -469,9 +469,10 @@ section {
   padding: var(--space-4) var(--space-5);
   border-radius: var(--radius);
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
   align-items: baseline;
-  gap: var(--space-4);
+  gap: var(--space-2) var(--space-4);
   transition: background-color var(--dur-fast) var(--ease-out);
 }
 
@@ -480,6 +481,7 @@ section {
 }
 
 .menu-card__name {
+  flex: 1 1 auto;
   font-weight: 600;
   font-size: var(--type-body);
   color: var(--color-espresso);
@@ -493,6 +495,46 @@ section {
   white-space: nowrap;
   color: var(--color-stone-deep);
   text-align: right;
+}
+
+.menu-card__prices {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: flex-end;
+  gap: var(--space-2) var(--space-4);
+  flex-shrink: 1;
+  max-width: 100%;
+}
+
+.menu-card__price-variant,
+.menu-card__variant {
+  display: inline-flex;
+  align-items: baseline;
+  gap: var(--space-2);
+  font-size: var(--type-small);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  color: var(--color-stone-deep);
+}
+
+.menu-card__variant-label,
+.menu-card__label {
+  font-size: var(--type-small);
+  color: var(--color-stone-deep);
+  font-weight: 400;
+}
+
+.menu-card__badge {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--color-espresso);
+  background-color: var(--color-caramel);
+  padding: 0.15rem 0.45rem;
+  border-radius: var(--radius);
+  margin-left: var(--space-2);
+  display: inline-block;
+  vertical-align: middle;
 }
 
 .menu__empty {
@@ -850,7 +892,10 @@ section {
 .footer__links a {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
+  min-width: 44px;
   min-height: 44px;
+  padding-inline: 12px;
   color: var(--color-cream);
   font-weight: 600;
   font-size: var(--type-small);
