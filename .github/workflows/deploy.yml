@@ -1,0 +1,51 @@
+name: Deploy GitHub Pages
+
+# Deploy otomatis setiap push ke branch main (PRD §7: hosting GitHub Pages via GitHub Actions).
+# Tanpa build step: situs statis, path aset relatif (PROJECT_PLAN D1 + D2).
+on:
+  push:
+    branches: [main]
+  workflow_dispatch: # publish ulang manual tanpa push baru
+
+# permissions minimal (least privilege)
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: github-pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: Publish static site to GitHub Pages
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+
+      - name: Assemble artifact (tanpa build step)
+        # Artifact = isi root repo, kecuali folder internal yang bukan artefak situs
+        # (docs/preview/ = screenshot QA, lihat catatan scope PM di kartu deploy).
+        run: |
+          set -eu
+          rm -rf _site
+          mkdir -p _site
+          cp -R index.html assets docs README.md _site/
+          rm -rf _site/docs/preview
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

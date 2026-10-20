@@ -3,3 +3,7 @@ node_modules/
 *.log
 .cache
 dist/
+public/
+scripts/
+ig_grid.json
+ig_posts.json

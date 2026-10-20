@@ -123,18 +123,36 @@ Cari section `<section id="kontak" class="contact">`:
 
 ## 4. Cara Publikasi ke GitHub Pages
 
-Situs ini telah dikonfigurasi untuk diterbitkan otomatis pada repository GitHub:
-`https://github.com/rioovs/omah-keboen` → `https://rioovs.github.io/omah-keboen/`
+Situs ini diterbitkan otomatis lewat GitHub Actions ke repository GitHub:
+`https://github.com/rioovs/omah-keboen`
 
-Langkah publikasi ulang jika ada pembaruan:
-1. Simpan seluruh perubahan berkas.
-2. Commit dan dorong (*push*) ke branch `main`:
-   ```bash
-   git add index.html assets/ README.md docs/
-   git commit -m "feat: perbarui konten menu dan informasi situs"
-   git push origin main
-   ```
-3. GitHub Actions / Pages akan memperbarui halaman publikasi secara instan.
+| URL | Status |
+|---|---|
+| **https://rivos.is-a.dev/omah-keboen/** | URL live (canonical) |
+| https://rioovs.github.io/omah-keboen/ | alias `github.io` (redirect ke canonical) |
+
+### Publish ulang (update konten tanpa deploy ulang penuh)
+
+Tidak ada proses build — cukup commit + push, workflow `Deploy GitHub Pages` mem-publish ulang situs (< 1 menit).
+
+```bash
+cd /home/rioovs/project/omah-keboen-web
+git add index.html assets/ README.md docs/
+git commit -m "feat: perbarui konten menu dan informasi situs"
+git push origin main
+```
+
+Untuk publish ulang tanpa commit baru (commit yang sudah ada di `main`):
+
+```bash
+gh workflow run deploy.yml --repo rioovs/omah-keboen --ref main
+```
+
+Cek hasil publish: `gh run list --repo rioovs/omah-keboen --workflow deploy.yml --limit 1`
+(run terakhir harus `success`), lalu buka `https://rivos.is-a.dev/omah-keboen/`.
+
+Prosedur lengkap (deploy manual, rollback, backup, monitoring, smoke test, akses `gh`)
+ada di **`docs/DEPLOY_RUNBOOK.md`**.
 
 ---
 
