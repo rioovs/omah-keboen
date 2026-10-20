@@ -135,6 +135,8 @@ Situs ini diterbitkan otomatis lewat GitHub Actions ke repository GitHub:
 
 Tidak ada proses build — cukup commit + push, workflow `Deploy GitHub Pages` mem-publish ulang situs (< 1 menit).
 
+URL live setelah publish: **https://rivos.is-a.dev/omah-keboen/** (alias `https://rioovs.github.io/omah-keboen/`).
+
 ```bash
 cd /home/rioovs/project/omah-keboen-web
 git add index.html assets/ README.md docs/
@@ -150,6 +152,10 @@ gh workflow run deploy.yml --repo rioovs/omah-keboen --ref main
 
 Cek hasil publish: `gh run list --repo rioovs/omah-keboen --workflow deploy.yml --limit 1`
 (run terakhir harus `success`), lalu buka `https://rivos.is-a.dev/omah-keboen/`.
+
+Status deploy terakhir (2026-10-20, commit `0931912`): run `39442605704` = **success**,
+smoke test live 200 (index + CSS + JS + hero image), Lighthouse mobile di URL live = **92–93 / 96 / 100 / 100**
+(run cache dingin 81/96/100/100). Rincian ada di `docs/DEPLOY_RUNBOOK.md` §6.1.
 
 Prosedur lengkap (deploy manual, rollback, backup, monitoring, smoke test, akses `gh`)
 ada di **`docs/DEPLOY_RUNBOOK.md`**.
