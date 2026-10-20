@@ -1,7 +1,7 @@
 # Design Spec — Website Single-Page "Omah Keboen"
 
-**Owner:** anton-uiux | **Dokumen:** `docs/DESIGN_SPEC.md` | **Versi:** 1.1 (Stage 1)  
-**Rujukan:** `docs/PRD.md` v1.0.0 (US-01…US-07), `docs/PROJECT_PLAN.md` (D1…D16), `docs/CONTENT_DATA.md` (data klien terverifikasi), `docs/TEST_PLAN.md` (TC-01…TC-59) — keputusan di sini merujuk ID, tidak menyalin isi PRD.  
+**Owner:** anton-uiux | **Dokumen:** `docs/DESIGN_SPEC.md` | **Versi:** 1.2 (Stage 1)  
+**Rujukan:** `docs/PRD.md` v1.0.0 (US-01…US-07), `docs/PROJECT_PLAN.md` (D1…D16), `docs/CONTENT_DATA.md` (data klien terverifikasi), `docs/MENU.md` (menu+harga final, 60 item), `docs/TECH_SPEC.md` (keputusan teknis Okta), `docs/TEST_PLAN.md` (TC-01…TC-59) + delta §8 — keputusan di sini merujuk ID, tidak menyalin isi PRD.  
 **Cakupan:** 1 halaman, 7 section, mobile-first 320–1440 px. Bahasa UI Indonesia.  
 **Aturan pakai:** semua warna/ukuran/spacing diimplementasi Okta lewat token (CSS custom properties) yang didefinisikan di §1. Tidak ada hex/px hardcoded di komponen.
 
@@ -114,7 +114,7 @@ Urutan (7 section, 1 halaman): **S1 Hero → S2 Menu → S3 Tentang → S4 Galer
 ### S1 Hero (US-01) — komponen & kriteria
 - `.hero`: min-height `100svh` desktop; di mobile min-height auto. **Kriteria terukur (TC-04):** pada 390×844, `bottom` dari CTA kedua ≤ **640 px**; pada 1440×900, `bottom` CTA kedua ≤ **900 px** — tanpa scroll, tanpa horizontal scroll. Foto hero di bawah CTA di mobile (boleh di bawah fold; posisi, bukan `loading`).
 - H1 = "Omah Keboen" (display). Lead 1 kalimat positioning (≤2 baris): `--type-body`, `max-width: 40ch`, warna espresso-soft (10,2:1 di cream).
-- **Meta line social proof (D12, CONTENT_DATA §7.4):** satu baris teks di bawah lead, sebelum CTA — `Halal · Buka setiap hari 08.00–21.00 WIB · Rating 4,5 Google Maps`. `--type-small`, `--color-stone-deep` (5,0:1 di cream), pemisah `·`, **tanpa pill ikon tambahan**. Alasan: konten verified (D12) tanpa menambah tombol (TC-02 tetap tepat 2 CTA) dan tanpa menduplikasi badge Halal pill milik footer (TC-31).
+- **Proof bar social proof (D12, CONTENT_DATA §7.4):** satu baris di bawah lead, sebelum CTA — `<ul class="hero__proof">` berisi 3 chip: `Halal` (pill, fill caramel, teks espresso 5,6:1), `Buka 08.00–21.00 WIB`, `Rating 4,5 Google Maps` (dua terakhir `--type-small`, `--color-stone-deep`). **Tanpa CTA tambahan** (TC-02 tetap tepat 2 tombol) dan tanpa menduplikasi badge Halal footer (TC-31 tetap pill besar di footer). Alasan: konten verified D12 + CONTENT_DATA §7.4, kontras tetap terukur (5,6:1 / 5,0:1) — bukan pill ikon tanpa teks.
 - 2 CTA berdampingan: **Hubungi WhatsApp** (primary) + **Lihat Menu** (secondary, `href="#menu"` persis). Tepat 2, tidak ada tombol lain di hero. Keduanya `aria-label` deskriptif.
 - Foto hero: pakai aset asli `assets/img/ig/ig-07.jpg` (eksterior + papan nama; alternatif `ig-09.jpg`) di box **aspect 4:5**, `object-fit: cover; object-position: center 45%` — **bukan** 16:9 full-bleed (D14: tidak ada foto landscape; hero wajib split 7/5 teks kiri + foto kanan di semua viewport).
 - **Loading foto hero = satu elemen `<img>`, `loading="eager"` + `fetchpriority="high"` + `width`/`height` eksplisit (512×640), di SEMUA viewport 320–1440 px.** Tidak ada varian lazy di mobile dan tidak ada `<picture>`/media-query swap. Alasan: hero = elemen LCP; lazy menunda decode dan menggeser LCP (TC-05/TC-47). Ini satu-satunya aturan loading untuk foto hero — §1.4 dan §4 merujuk ke sini, tidak menambah aturan lain.
@@ -128,7 +128,8 @@ Urutan (7 section, 1 halaman): **S1 Hero → S2 Menu → S3 Tentang → S4 Galer
 - Format harga persis `Rp20.000`: huruf `Rp` + angka tanpa spasi, titik ribuan. **Dilarang**: `Rp. 20.000`, `Rp 20.000`, `20rb`, `Rp20,000`.
 - Harga `white-space: nowrap`; nama boleh wrap 2 baris; pada 320 px baris item + harga tidak boleh overlap/terpotong (TC-13).
 - **Ejaan menu ikut dokumen asli klien** (MENU.md §2: "Red Valved", "Jus Banana Coffe") — daftar harga = data klien, bukan tampilan yang dikoreksi diam-diam (Gate 2, TC-07/TC-08 nama & harga final).
-- **Exeption rentang (MENU.md §1):** "Filter V60" tampil `Rp25.000 – Rp35.000` (satu slot, en dash, tanpa kolom varian). Ini satu-satunya node harga non-single; QA perlu memperbarui regex TC-12 agar range ini valid (diencerkan di §8). "Kopi Susu Gula Aren" harga tampil di kolom Dingin saja, jangan di-copy ke kolom Hangat.
+- **Pengecualian rentang (MENU.md §1):** "Filter V60" tampil `Rp25.000 – Rp35.000` (satu slot, en dash, tanpa kolom varian). Ini satu-satunya node harga non-single; QA perlu memperbarui regex TC-12 agar range ini valid (diencerkan di §8). "Kopi Susu Gula Aren" harga tampil di kolom Dingin saja, jangan di-copy ke kolom Hangat.
+- **Kalimat rentang global "Rp20.000 – Rp75.000" TIDAK ditampilkan di halaman menu** (data tetap di `docs/CONTENT_DATA.md` §1). Alasan: TC-12 mensyaratkan 100% node harga match pola `Rp20.000`; kalimat rentang global jadi 1 node non-contoh. Gate 2 sudah punya harga per item, jadi rentang tidak perlu.
 - **Stage 1 (Gate 1, sebelum harga terpasang — D13):** slot harga memakai em-dash `—` (tabular-nums, `--color-stone-deep`) + 1 baris `.menu__note`: "Harga final menyusul — tanya langsung lewat WhatsApp." Dilarang: angka harga karangan, rentang harga sebagai harga per item, atau "mulai dari RpX" per item (TC-10/TC-12).
 - **Gate 2:** harga `—` diganti harga final MENU.md; blok `.menu__empty` dihapus. **State kosong (data belum siap):** 1 blok `.menu__empty` bertuliskan "Hubungi untuk menu harian" + CTA WA (US-02 fallback), hanya dirender bila data menu belum ada. Beri `data-placeholder="true"` + komentar `<!-- PLACEHOLDER: menu final dari klien -->`. 0 harga karangan di bawah label fallback (TC-11).
 
@@ -145,16 +146,17 @@ Urutan (7 section, 1 halaman): **S1 Hero → S2 Menu → S3 Tentang → S4 Galer
 
 ### S5 Lokasi & Jam (US-05)
 - Kiri: alamat lengkap (teks) + tabel `.hours-table` 7 baris (hari, jam) + tombol "Buka di Google Maps" (`.btn--map`).
-- **Alamat dua baris (D12):** baris utama = alamat Google Maps "Kedungsari, Karang Dagaan, Kec. Megaluh, Kabupaten Jombang, Jawa Timur 61462"; baris sekunder (lebih kecil, `--color-stone-deep`) = "Dsn. Karangasem, Kec. Bandar Kedungmulyo". Dua-duanya benar, beda penamaan wilayah — jangan pilih salah satu, jangan tampilkan sebagai 2 blok alamat terpisah (TC-20: 1 blok alamat).
+- **Alamat dua baris (D12):** baris utama = alamat Google Maps "Kedungsari, Karang Dagaan, Kec. Megaluh, Kabupaten Jombang, Jawa Timur 61462"; baris sekunder (lebih kecil, `--color-stone-deep`) = "Dsn. Karangasem, Kec. Bandar Kedungmulyo". Dua-duanya benar, beda penamaan wilayah — jangan pilih salah satu, jangan tampilkan sebagai 2 blok alamat terpisah (TC-20: 1 blok alamat). Keduanya berada di 1 elemen `<address>` (satu blok, 2 baris) + 1 label nama "Omah Keboen" di atasnya, memuat "Jombang" (TC-20).
 - **Jam buka (D12):** setiap hari Senin–Minggu 08.00–21.00 WIB. Tabel tetap 7 baris (satu per hari, nilai sama) — bukan 1 baris ringkas, supaya US-05 "jam buka per hari" terpenuhi dan TC-21 bisa diuji.
-- Kanan: `.map-embed` = kotak placeholder (rasio 4:3) + tombol Maps di bawahnya. Peta ringan (US-05): `static map <img>` lokal **atau** `iframe` Google Maps — jika iframe: wajib `loading="lazy"`, width/height, `title="Peta lokasi Omah Keboen"`. 0 script pihak ketiga non-lazy di initial. Link Maps: `https://maps.app.goo.gl/XCTT1TPcTkko9Pbi9` (dari klien — dipakai sebagai CTA utama).
+- Kanan: `.map-embed` = kotak placeholder (rasio 4:3) + tombol Maps di bawahnya. Peta ringan (US-05): `static map <img>` lokal **atau** `iframe` Google Maps — jika iframe: wajib `loading="lazy"`, width/height, `title="Peta lokasi Omah Keboen"`. 0 script pihak ketiga non-lazy di initial.
+- **Link Maps (WAJIB `google.com/maps`, TC-23/TC-27):** `https://www.google.com/maps/search/?api=1&query=Kedungsari%2C%20Karang%20Dagaan%2C%20Kec.%20Megaluh%2C%20Kabupaten%20Jombang%2C%20Jawa%20Timur%2061462` (query = alamat persis yang tampil, agar konsisten dengan TC-20/TC-27). Short-link klien `https://maps.app.goo.gl/XCTT1TPcTkko9Pbi9` tetap tercatat di `docs/CONTENT_DATA.md`, **tidak** dipakai di `href` (shortlink tidak memuat `google.com/maps` → TC-23 gagal).
 - Tabel semantik `<table>` dengan `<th scope="row">`, tabular-nums, baris "Tutup" ditandai teks (bukan warna saja). Format jam konsisten 7 baris: `HH.MM–HH.MM` (en dash), hari tutup teks "Tutup".
 
 ### S6 Kontak & Aksi (US-06)
 - Field espresso (inverted): 3 tombol besar cream (`--color-cream` pada espresso, 14,5:1):
   1. **Hubungi WhatsApp** — `https://wa.me/6285236639216?text=Halo%20Omah%20Keboen%2C%20saya%20mau%20tanya%20menu%20dan%20reservasi.` (D7 + D12), ikon + label.
-  2. **Instagram** — `https://www.instagram.com/omahkeboen.jbg/` (D12), ikon + label.
-  3. **Buka di Google Maps** — `https://maps.app.goo.gl/XCTT1TPcTkko9Pbi9` (D12), ikon + label.
+  2. **Instagram** — `https://instagram.com/omahkeboen.jbg` (D12; **tanpa** `www.` dan **tanpa** slash akhir — TC-26), ikon + label.
+  3. **Buka di Google Maps** — link Maps yang sama dengan S5 (`https://www.google.com/maps/search/?api=1&query=…alamat…`, TC-27), ikon + label.
 - Nomor WA ditampilkan sebagai `0852-3663-9216` (format lokal, enak dibaca), link tetap format internasional `6285236639216` (D7).
 - Semua dengan ikon + label teks (US-06). Tombol sekunder = outline 2 px cream pada espresso.
 - Nama kelas: `.contact-action--wa` (fill cream, teks espresso — CTA utama), `.contact-action--ig` (outline 2 px cream, teks cream), `.contact-action--maps` (outline 2 px cream, teks cream). Ketiganya ≥44 px tinggi, `display:inline-flex`, ikon 20 px + label teks.
@@ -214,7 +216,7 @@ Urutan (7 section, 1 halaman): **S1 Hero → S2 Menu → S3 Tentang → S4 Galer
 | Focus keyboard | outline 2 px espresso, offset 2 px, selalu terlihat (`:focus-visible`) |
 | Smooth scroll | `scroll-behavior: smooth`; dinonaktifkan di `prefers-reduced-motion` |
 | Mobile nav | disclosure push-down (lihat §1.4) |
-| Loading gambar | `loading="lazy"` (kecuali hero eager), placeholder SVG menampilkan rasio yang benar |
+| Loading gambar | Foto hero: `loading="eager"` + `fetchpriority="high"` di semua viewport (§2.S1). Foto galeri/peta: `loading="lazy"` + `decoding="async"`. Placeholder SVG menampilkan rasio slot final |
 | Error gambar | `alt` tampil; tidak ada ikon rusak (SVG lokal tidak rusak) |
 | Empty menu | blok "Hubungi untuk menu harian" + CTA WA |
 | Reduced motion | semua transisi ≤0 ms, smooth scroll off |
@@ -272,10 +274,17 @@ Aturan praktis:
 ## 6. Skema placeholder (D4) + guidance gambar (D5)
 
 **Penanda (seragam, D4):**
-- Token teks: `PLACEHOLDER_WA_NUMBER`, `PLACEHOLDER_IG_USER`, `PLACEHOLDER_MENU_ITEMS`, `PLACEHOLDER_HOURS`, `PLACEHOLDER_HERO_IMAGE`, `PLACEHOLDER_GALLERY_N`.
-- Atribut `data-placeholder="true"` pada elemen placeholder.
-- Komentar HTML `<!-- PLACEHOLDER: <deskripsi> -->` sebelum elemen.
-- Bentuk di Stage 1: 1 baris caption kecil di bawah slot placeholder, teks `PLACEHOLDER_MENU — Hubungi untuk menu harian`, diberi `data-placeholder="true"` + komentar; token hilang total di Gate 2 (TC-51: jumlah `PLACEHOLDER_` = 0).
+- Atribut `data-placeholder="true"` pada elemen placeholder + komentar HTML `<!-- PLACEHOLDER: <deskripsi> -->` sebelum elemen.
+- **Token aktif Stage 1 (sudah final = tanpa token):** WA `6285236639216`, IG `omahkeboen.jbg`, jam buka, alamat, dan link Maps sudah final (D12) → **tanpa** `PLACEHOLDER_WA_NUMBER` / `PLACEHOLDER_IG_USER` / `PLACEHOLDER_HOURS`. Yang tersisa hanya 4 token:
+
+| Token | Lokasi | Status |
+|---|---|---|
+| `PLACEHOLDER_HERO_IMAGE` | Caption + komentar di bawah slot foto hero (`data-placeholder="true"`) | Foto portrait IG terpasang sementara (ig-07); menunggu landscape final klien (⚠️ D14) |
+| `PLACEHOLDER_ITEM_NAME` | Nama item pada kartu menu yang belum punya data final | Menunggu konfirmasi klien untuk 2 item konflik MENU.md |
+| `PLACEHOLDER_MENU_ITEMS` | Caption blok `.menu__empty` | Menunggu harga final terpasang |
+| `PLACEHOLDER_GALLERY` | Komentar di atas grid galeri | Foto IG terpasang sebagai placeholder berlabel; menunggu izin klien (R9) |
+
+- Bentuk di Stage 1: 1 baris caption kecil di bawah slot placeholder (mis. `PLACEHOLDER_MENU — Hubungi untuk menu harian`), diberi `data-placeholder="true"` + komentar; token hilang total di Gate 2 (TC-51: jumlah `PLACEHOLDER_` = 0).
 - Gambar: SVG lokal di `assets/img/` (D5), bukan hotlink. Semua path relatif tanpa leading `/` (D2).
 
 **Dimensi minimum, rasio & budget:**
@@ -285,7 +294,7 @@ Aturan praktis:
 
 **Gaya netral (agar placeholder tetap rapi):**
 - Latar bone/cream-soft, motif garis sederhana warna stone (opacity 0,35), **tanpa** gradient/filter/dekorasi.
-- Label kecil "Foto placeholder" (stone-deep) agar terasa disengaja.
+- Label kecil "Foto menyusul" (stone-deep) agar terasa disengaja, bukan rusak.
 - Aspect ratio placeholder = slot final (mencegah CLS saat swap aset nyata).
 
 **Stage 1 vs Stage 2:** Stage 1 render semua section dengan placeholder SVG + token PLACEHOLDER_*. Stage 2 (Okta) swap aset nyata dari klien; **token, tipografi, layout tidak berubah**.
@@ -295,20 +304,39 @@ Aturan praktis:
 ## 7. Asumsi & pertanyaan terbuka
 
 Asumsi (dapat diveto PM/klien, rujuk US-ID):
-1. Menu disajikan sebagai kartu per item dalam grup kategori, tanpa foto (US-02). Bila klien ingin foto hidangan, tambah slot gambar 1:1 di kartu — perlu US-ID baru dari Kevin.
+1. Menu disajikan sebagai kartu per item dalam grup kategori, tanpa foto (US-02). Bila klien ingin foto hidangan, tambah slot gambar 1:1 di kartu — perlu US-ID baru dari Kevin. Foto menu `assets/img/menu-cetak-*.jpg` dipakai sebagai bahan verifikasi, bukan aset web.
 2. Nav mobile = disclosure push-down, bukan overlay (§1.4). Bila Okta lebih suka hamburger overlay, kontrak touch-target & `scroll-margin-top` tetap berlaku.
 3. Tidak ada foto di kartu menu (MVP). Galeri menampung semua foto (US-04).
 4. Peta = placeholder box + CTA "Buka di Google Maps"; embed iframe ringan = keputusan teknis Okta (US-05).
-5. Kategori menu final = Kopi / Non-Kopi / Kudapan / Main Course (Italian & Nusantara) per PRD US-02; bila klien ubah, update `.menu__category` tanpa ubah token.
+5. Kategori menu final = Kopi / Non-Kopi / Kudapan/Cakeshop / Main Course (Italian & Nusantara) per PRD US-02, isi 60 item dari `docs/MENU.md` (§2.S2). Bila klien ubah, update isi kategori tanpa ubah token. 2 item konflik MENU.md (Filter V60, Kopi Susu Gula Aren) menunggu konfirmasi Rio — harga karangan dilarang.
+6. Hero memakai foto portrait 4:5 (D14) sampai klien mengirim landscape ≥1600 px. Keputusan ini berbeda dari ekspektasi rasio 16:9 pada TC-05 versi lama — QA diminta memperbarui TC-05 (§8).
 
 **Pertanyaan untuk Sania (bila ada):** tidak ada yang memblokir penulisan spec ini — semua keputusan desain di atas berada dalam remit anton-uiux (design owner, shared-rules §6). Jika PM/klien ingin mengubah salah satu asumsi di atas, catat di thread kartu ini (US-ID terdampak + alasan) sebelum Okta implementasi.
+
+---
+
+## 8. Rekonsiliasi dengan TEST_PLAN (delta untuk QA)
+
+Spec ini sumber kebenaran tunggal. TEST_PLAN (59 TC) disusun sebelum `docs/CONTENT_DATA.md`, `docs/MENU.md`, dan keputusan hero D14 ada. Delta berikut wajib QA terapkan agar tiap TC punya **expected result tunggal**:
+
+| TC | Expected lama | Expected baru (authoritative) | Alasan |
+|---|---|---|---|
+| TC-04 | "foto boleh di bawah fold (**lazy**) di mobile" | Foto hero: 1 elemen `<img>`, `loading="eager"` + `fetchpriority="high"` + `width`/`height` eksplisit di **semua** viewport 320–1440 px. Di mobile fotonya boleh di bawah CTA — itu **posisi/layout**, bukan `loading` | Kontradiksi §1.4 vs §2.S1 (catatan QA 2026-10-20). Lazy di mobile menunda decode pada elemen LCP |
+| TC-05 | rasio **16:9**, ≥1600 px lebar, "mobile lazy diizinkan" | Box foto **4:5** (portrait), `width`/`height` = dimensi file asli (512×640), `loading="eager"` + `fetchpriority="high"` semua viewport, `src` relatif, ≤300 KB | D14 (tidak ada foto landscape) + §2.S1. Rasio 16:9 mustahil sampai klien kirim landscape |
+| TC-12 | 100% harga match `^Rp\d{1,3}(\.\d{3})*$` | Regex tetap + **1 pengecualian sah**: node range `Rp25.000 – Rp35.000` (Filter V60, MENU.md §1). Semua node lain WAJIB single value | MENU.md menetapkan range itu; tidak muat ke pola single |
+| TC-32 | "0 tahun hardcoded sebagai satu-satunya sumber" | Markup: fallback statis `2026`; JS `textContent = new Date().getFullYear()` menimpanya. Tahun berjalan tetap dari `Date` | Footer tidak boleh kosong tanpa JS (catatan Okta, TECH_SPEC §9) |
+| TC-50 | token `PLACEHOLDER_WA_NUMBER`, `PLACEHOLDER_IG_USER`, `PLACEHOLDER_HOURS` | Token yang boleh ada di Stage 1 hanya 4: `PLACEHOLDER_HERO_IMAGE`, `PLACEHOLDER_ITEM_NAME`, `PLACEHOLDER_MENU_ITEMS`, `PLACEHOLDER_GALLERY` (WA/IG/jam/alamat sudah final, D12) | §6 |
+| TC-07…TC-10 | "nama & harga final dari CLIENT_INPUT" | Sumber = `docs/MENU.md` (60 item, dipetakan ke 4 kategori, §2.S2): 1 harga = 1 nilai; 2 harga = 2 nilai berlabel "Hangat"/"Dingin" | MENU.md landing 2026-10-20 |
+| TC-58 | token hex, urutan 7 section S1–S7, radius 0 + badge Halal pill, 6 breakpoint | Tidak berubah — tetap valid | — |
+
+Catatan: tabel di atas adalah **usulan spec**; versi final TEST_PLAN tetap milik QA. Tidak ada expected result ganda yang dibiarkan menggantung.
 
 ---
 
 ## Handoff (di thread kartu)
 
 Handoff: anton-uiux → okta-softwaredeveloper  
-Done: `docs/DESIGN_SPEC.md` (token warna/tipografi/spacing, layout 7 section US-01..US-07, komponen, state, a11y, placeholder).  
+Done: `docs/DESIGN_SPEC.md` v1.2 (token warna/tipografi/spacing, layout 7 section US-01..US-07, komponen, state, a11y, placeholder, rekonsiliasi TC).  
 Output: `docs/DESIGN_SPEC.md` + rasio kontras terhitung (§5).  
-Next: Okta implementasi Stage 1 dengan placeholder SVG; Rimuru QA pakai TEST_PLAN.  
-Blockers: data klien (WA/IG/foto/menu/jam) masih pending (kartu Kevin) — spec pakai token PLACEHOLDER_* (D4).
+Next: Okta implementasi Stage 1 dengan placeholder SVG; Rimuru QA pakai TEST_PLAN + delta §8.  
+Blockers: 2 item konflik harga MENU.md (Filter V60, Kopi Susu Gula Aren) menunggu Rio; foto landscape hero & izin klien untuk foto IG masih ⚠️.
