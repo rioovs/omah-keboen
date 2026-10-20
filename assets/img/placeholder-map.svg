@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" width="1200" height="900">
+  <rect width="1200" height="900" fill="#FBF7F0"/>
+  <rect x="30" y="30" width="1140" height="840" fill="none" stroke="#8A8078" stroke-width="2" stroke-opacity="0.35"/>
+  <path d="M30 300 H1170 M30 600 H1170 M400 30 V870 M800 30 V870" stroke="#8A8078" stroke-width="1.5" stroke-opacity="0.35"/>
+  <rect x="480" y="420" width="240" height="60" fill="#E8DFD1"/>
+  <text x="600" y="456" fill="#6E6660" font-family="'Inter', sans-serif" font-size="20" font-weight="600" text-anchor="middle">Foto placeholder</text>
+</svg>
